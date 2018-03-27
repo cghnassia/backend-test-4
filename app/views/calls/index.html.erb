@@ -1,0 +1,30 @@
+<table>
+  <tr>
+    <th>ID</th>
+    <th>From</th>
+    <th>Status</th>
+    <th>Choice</th>
+    <th>Duration</th>
+    <th>Recording URL</th>
+    <th>Recording Duration</th>
+    <th>Created At</th>
+    <th>Hangup At</th>
+  </tr>  
+  <% @calls.each do |call| %>
+    <tr>
+      <td><%= call.id %></td>
+      <td><%= call.phone_number %></td>
+      <td><%= call.status %></td>
+      <td><%= call.digit %></td>
+      <td><%= call.duration %></td>
+      <td>
+        <% if call.recording_url %>
+          <a href="<%= call.recording_url %>"><%= call.recording_url %><a>
+        <% end %>
+      </td>
+      <td><%= call.recording_duration %></td>
+      <td><%= call.created_at %></td>
+      <td><%= call.hangup_at %></td>
+    </tr>
+  <% end %>
+</table>

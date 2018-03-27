@@ -13,6 +13,15 @@
 ActiveRecord::Schema.define(version: 20170719183956) do
 
   create_table "calls", force: :cascade do |t|
+    t.string "status"
+    t.integer "duration"
+    t.string "phone_number", null: false
+    t.string "phone_state"
+    t.string "phone_country"
+    t.integer "digit"
+    t.string "recording_url"
+    t.integer "recording_duration"
+    t.datetime "hangup_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
