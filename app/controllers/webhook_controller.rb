@@ -1,4 +1,6 @@
 class WebhookController < ApplicationController
+  #TODO: Put variable in configuration file by environment (phone number to forward)
+
   def default
     call = Call.create(
       status: "started",
