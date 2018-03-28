@@ -5,5 +5,4 @@ Rails.application.routes.draw do
   post 'webhook/hangup/:id' => 'webhook#hangup'
 
   get 'calls' => 'calls#index'
-  get 'calls/:id' => 'calls#show'
 end
