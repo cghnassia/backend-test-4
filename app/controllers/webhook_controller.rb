@@ -1,6 +1,6 @@
 class WebhookController < ApplicationController
   #TODO: Put variable in configuration file by environment (phone number to forward)
-
+  #TODO: What happens if I hangup the call right after the selection of the digit
   def default
     call = Call.create(
       status: "started",
@@ -19,10 +19,10 @@ class WebhookController < ApplicationController
       case params[:Digits]
         when "1"
           call.update_attributes(status: "digit", digit: 1)
-          response = record_response(call)    
+          response = forward_response(call)    
         when "2"
           call.update_attributes(status: "digit", digit: 2)
-          response = forward_response(call)
+          response = record_response(call)
         else
           response = instruction_response(call)
       end
@@ -63,15 +63,15 @@ class WebhookController < ApplicationController
 
   def forward_response(call)
     Twilio::TwiML::VoiceResponse.new do |r|
-      r.say('Please leave a message after the beep.', voice: 'alice')
-      r.record(action: "/webhook/hangup/#{call.id}")
-    end
+      r.say('You are going to be redirected to my personal phone number. Thanks', voice: 'alice')
+      r.dial(number: '+33770172447', caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
+    end 
   end
 
   def record_response(call)
     Twilio::TwiML::VoiceResponse.new do |r|
-      r.say('You are going to be redirected to my personal phone number. Thanks', voice: 'alice')
-      r.dial(number: '+33770172447', caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
-    end 
+      r.say('Please leave a message after the beep.', voice: 'alice')
+      r.record(action: "/webhook/hangup/#{call.id}")
+    end
   end
 end
