@@ -13,8 +13,6 @@ class WebhookController < ApplicationController
   end
 
   def digit
-    #TODO: fail url ? 
-    #TODO: refactor else 
     call = Call.find_by(id: params[:id])
 
     if call
