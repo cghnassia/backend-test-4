@@ -35,9 +35,10 @@ class WebhookController < ApplicationController
 
   def hangup
     call = Call.find_by(id: params[:id])
+
     if call
       call.update_attributes(
-        status: params[:DialCallStatus],
+        status: params[:DialCallStatus] || params[:CallStatus],
         duration: params[:DialCallDuration],
         recording_url: params[:RecordingUrl],
         recording_duration: params[:RecordingDuration],
