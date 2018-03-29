@@ -32,9 +32,13 @@ RSpec.describe "Webhook", type: :request do
 
   describe "POST /webhook/digit/:id" do
     let!(:call) { create(:call, status: "started") }
-   
+    let!(:office_phone_number) { Faker::PhoneNumber.phone_number }
+    
     context "when user select 1" do
-      before { post "/webhook/digit/#{call.id}", params: { Digits: "1" } }
+      before {
+        ENV["OFFICE_PHONE_NUMBER"] = office_phone_number
+        post "/webhook/digit/#{call.id}", params: { Digits: "1" } 
+      }
 
       it "returns status code 200" do
         expect(response).to have_http_status(200)
@@ -43,7 +47,7 @@ RSpec.describe "Webhook", type: :request do
       it "returns expected TwiML response" do
         expected_body = Twilio::TwiML::VoiceResponse.new do |r|
           r.say('You are going to be redirected to my personal phone number. Thanks', voice: 'alice')
-          r.dial(number: "+33770172447", caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
+          r.dial(number: office_phone_number, caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
         end 
 
         expect(response.body).to eq(expected_body.to_s)

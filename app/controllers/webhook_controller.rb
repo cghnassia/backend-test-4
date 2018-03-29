@@ -64,7 +64,7 @@ class WebhookController < ApplicationController
   def forward_response(call)
     Twilio::TwiML::VoiceResponse.new do |r|
       r.say('You are going to be redirected to my personal phone number. Thanks', voice: 'alice')
-      r.dial(number: '+33770172447', caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
+      r.dial(number: ENV["OFFICE_PHONE_NUMBER"], caller_id: call.phone_number, action: "/webhook/hangup/#{call.id}", record: "record-from-answer")
     end 
   end
 
