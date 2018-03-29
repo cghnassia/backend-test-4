@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   post 'webhook/hangup/:id' => 'webhook#hangup'
 
   get 'calls' => 'calls#index'
+  root to: "call#index"
 end
