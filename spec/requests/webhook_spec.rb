@@ -118,6 +118,14 @@ RSpec.describe "Webhook", type: :request do
       expect(response).to have_http_status(200)
     end
 
+    it "returns expected TwiML response" do
+      expected_body =  Twilio::TwiML::VoiceResponse.new do |r|
+        r.hangup
+      end
+
+      expect(response.body).to eq(expected_body.to_s)
+    end
+
     it "update call in database with expected values" do
       call.reload
       expect(call.status).to eq("completed")

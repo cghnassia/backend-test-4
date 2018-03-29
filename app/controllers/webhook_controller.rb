@@ -46,7 +46,7 @@ class WebhookController < ApplicationController
       )
     end
 
-    head :ok
+    render xml: hangup_response.to_s
   end
 
   private 
@@ -72,6 +72,12 @@ class WebhookController < ApplicationController
     Twilio::TwiML::VoiceResponse.new do |r|
       r.say('Please leave a message after the beep.', voice: 'alice')
       r.record(action: "/webhook/hangup/#{call.id}")
+    end
+  end
+
+  def hangup_response
+    Twilio::TwiML::VoiceResponse.new do |r|
+      r.hangup
     end
   end
 end
